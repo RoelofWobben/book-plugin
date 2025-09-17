@@ -16,15 +16,9 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-/**
- * Registers the block using a `blocks-manifest.php` file, which improves the performance of block type registration.
- * Behind the scenes, it also registers all assets so they can be enqueued
- * through the block editor in the corresponding context.
- *
- * @see https://make.wordpress.org/core/2025/03/13/more-efficient-block-type-registration-in-6-8/
- * @see https://make.wordpress.org/core/2024/10/17/new-block-type-registration-apis-to-improve-performance-in-wordpress-6-7/
- */
-function create_block_my_reading_list_block_init() {
+
+add_action( 'init', 'my_reading_list_reading_list_block_init' );
+function my_reading_list_reading_list_block_init() {
 	/**
 	 * Registers the block(s) metadata from the `blocks-manifest.php` and registers the block type(s)
 	 * based on the registered block metadata.
@@ -56,11 +50,6 @@ function create_block_my_reading_list_block_init() {
 		register_block_type( __DIR__ . "/build/{$block_type}" );
 	}
 }
-add_action( 'init', 'my_reading_list_reading_list_block_init' );
-function my_reading_list_reading_list_block_init() {
-    register_block_type( __DIR__ . '/build' );
-}
-
 
 /**
  * Register a book custom post type
@@ -82,3 +71,28 @@ function my_reading_list_register_book_post_type() {
 			),
 		);
 }
+
+/**
+ * Add featured image to the book post type
+ */
+add_action( 'rest_api_init', 'my_reading_list_register_book_featured_image' );
+function my_reading_list_register_book_featured_image() {
+    register_rest_field(
+        'book',
+        'featured_image_src',
+        array(
+            'get_callback' => 'my_reading_list_get_book_featured_image_src',
+            'schema'       => null,
+        )
+    );
+}
+
+function my_reading_list_get_book_featured_image_src( $object ) {
+    if ( $object['featured_media'] ) {
+        $img = wp_get_attachment_image_src( $object['featured_media'], 'medium' );
+        return $img[0];
+    }
+    return false;
+}
+
+?>

@@ -13,8 +13,23 @@ return array(
 		'example' => array(
 			
 		),
+		'attributes' => array(
+			'showContent' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
+			'showImage' => array(
+				'type' => 'boolean',
+				'default' => true
+			)
+		),
 		'supports' => array(
-			'html' => false
+			'html' => false,
+			'align' => true,
+			'color' => array(
+				'background' => true,
+				'text' => true
+			)
 		),
 		'textdomain' => 'my-reading-list',
 		'editorScript' => 'file:./index.js',
