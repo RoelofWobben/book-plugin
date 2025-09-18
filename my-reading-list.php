@@ -27,9 +27,16 @@ function my_reading_list_reading_list_block_init() {
 	 * @see https://make.wordpress.org/core/2025/03/13/more-efficient-block-type-registration-in-6-8/
 	 */
 	if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
-		wp_register_block_types_from_metadata_collection( __DIR__ . '/build', __DIR__ . '/build/blocks-manifest.php' );
+		register_block_type( __DIR__ . '/build', array( 'render_callback' => 'my_reading_list_render_callback' ) );
 		return;
 	}
+
+	function my_reading_list_render_callback( $attributes ){
+		$output = '<pre>';
+        $output .= print_r( $attributes, true );
+        $output .= '<pre>';
+        return $output;
+    }
 
 	/**
 	 * Registers the block(s) metadata from the `blocks-manifest.php` file.

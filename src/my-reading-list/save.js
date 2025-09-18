@@ -5,6 +5,10 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import { select } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
+
+import BookList from './components/BookList';
 
 /**
  * The save function defines the way in which the different attributes should
@@ -16,9 +20,5 @@ import { useBlockProps } from '@wordpress/block-editor';
  * @return {Element} Element to render.
  */
 export default function save() {
-	return (
-		<p { ...useBlockProps.save() }>
-			{ 'My Reading List – hello from the saved content!' }
-		</p>
-	);
+    return null;
 }
